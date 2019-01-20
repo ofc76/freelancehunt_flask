@@ -1,0 +1,24 @@
+ {% extends "layout.html" %} 
+{% block content %}
+    <div style="display: table; margin: 0 auto;">
+    <strong style="color: red">{{ table_head }}</strong>
+    </div>
+    <div class="col-md-12">
+
+    <table class="table table-striped">
+<!--        <tr>
+            <th>Project</th>
+            <th>Author</th>
+            <th>Time</th>
+        </tr>
+-->
+    {% for i in content_arr %}
+        <tr>
+            <td class="mylink"> <a  href="{{ i.detail_url }}">{{ i.project }}</a> </td>
+            <td class="col2" {% if i.author == 'freelancehunt' %} style="color: red"{% endif %}><i> {{ i.author }} </i></td>
+            <td class="col3" style="width:6%;"><a  href="{{ i.detail_url }}"><b>{{ i.time }}</b></a></td>
+        </tr>
+    {% endfor %}
+    </table>
+    </div>
+{% endblock %}

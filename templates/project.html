@@ -1,0 +1,33 @@
+ {% extends "layout.html" %} 
+{% block content %}
+    <div style="display: table; margin: 0 auto;">
+    <strong style="color: red">{{ table_head }}</strong>
+    </div>
+    <div class="col-md-12">
+
+    <table class="table table-striped">
+
+    {% for i in content %}
+        <tr>
+            <td>{{ i.name }}</td>
+            <td>{{ i.value|safe }}</td>
+        </tr>
+    {% endfor %}
+    </table>
+    </div>
+<script>
+     window.setTimeout(function(){
+       window.location.href = "{{ base_url }}";
+       }, 45000);
+ </script>
+<style>
+    .selectbot {position: absolute; top: 15px; right: 15px; height: 10em; width: 10em; border-radius: 5px; font-size: 1em;
+    background-color: #4bff50;}
+</style>
+    <button class="selectbot" ><< BACK</button>
+<script>
+    document.getElementsByClassName("selectbot")[0].onclick = function() {
+        window.location.href = "{{ base_url }}";
+    }
+</script>
+{% endblock %}
