@@ -1,0 +1,31 @@
+ {% extends "layout.html" %} 
+{% block content %}
+    <div style="display: table; margin: 0 auto;">
+    <strong style="color: red">{{ table_head }}</strong>
+    </div>
+    <div class="col-md-12">
+
+    <table class="table table-striped">
+
+    {% for i in content_arr %}
+        <tr>
+            <td class="mylink"> {{ i.project }} <span class="col2"> < {{ i.author  }} > </span>
+                <br>
+                <div class="wordwrap">
+                    <a  href="{{ i.detail_url }}"> {{  i.text }} </a>
+                </div>
+            </td>
+        </tr>
+    {% endfor %}
+    </table>
+    <div>
+        <button class="newsbtn" ><strong>news feed >></strong></button>
+
+    </div>
+    </div>
+<script>
+    document.getElementsByClassName("newsbtn")[0].onclick = function() {
+        window.location.href = "{{ base_url }}";
+    }
+</script>
+{% endblock %}
