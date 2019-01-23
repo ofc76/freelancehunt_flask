@@ -27,7 +27,8 @@
     <button class="selectbot" ><< BACK</button>
 <script>
     document.getElementsByClassName("selectbot")[0].onclick = function() {
-        window.location.href = "{{ base_url }}";
+      /*  window.location.href = "{{ base_url }}"; */
+        window.history.go(-1);
     }
 </script>
 {% endblock %}

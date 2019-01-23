@@ -2,7 +2,7 @@ from flask import Flask
 from flask import request, render_template, url_for
 from flask import Response, redirect, abort
 from fh_flask_api import *
-from fh_flask_settings import REFRESH_TIME, MAX_LINES
+from fh_flask_settings import REFRESH_TIME, MAX_LINES, MAX_LINES_PRJ_LIST
 
 app = Flask(__name__)
 
@@ -53,6 +53,32 @@ def project(project_id):
 @app.route('/detail/')
 def project_redirect():
     return redirect(url_for('hello_world'))
+
+
+@app.route('/prjlist')
+def project_list():
+    base_url = url_for('hello_world')
+    table_head = 'projects for my skills'
+    try:
+            arr = get_prj_list(MY_SKILLS)
+            content = []
+
+            for i in arr:
+                tmp = {}
+                tmp['project'] = i.title
+                tmp['author'] = i.login
+                # tmp['time'] = i.time.split('T')[1].split('+')[0][:-3]
+                tmp['detail_url'] = url_for('project', project_id=i.project_id)
+                try:
+                    tmp['text'] = i.description[:350]
+                except:
+                    tmp['text'] = i.description
+                content.append(tmp)
+            return render_template('prjlist.html', content_arr=content[:MAX_LINES_PRJ_LIST], base_url=base_url,
+                                   table_head=table_head), 200, add_headers_http(REFRESH_TIME, request, redirect='')
+    except:
+            return render_template('base.html', content_arr=[], table_head=''), 200, add_headers_http(
+                REFRESH_TIME, request, redirect='')
 
 
 if __name__ == '__main__':

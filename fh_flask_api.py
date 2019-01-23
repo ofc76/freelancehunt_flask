@@ -5,13 +5,15 @@ import requests
 import json
 import re
 from fh_flask_class import *
-from fh_flask_settings import ID, API_KEY
+from fh_flask_settings import ID, API_KEY, MY_SKILLS
 
 RE_STR = r'(?P<begin>.*)[<]a[ ].*["]>(?P<middle>.*)</a>(?P<end>.*)'
 RE_BLOG_STR = r'(?P<begin>.*)[<]a[ ].*["]>(?P<middle>.*)</a>(?P<end>.*)'
 METHOD = 'GET'
 URL = 'https://api.freelancehunt.com/my/feed'
 URL_PROJECT = 'https://api.freelancehunt.com/projects/{}'
+URL_PROJECT_LIST = 'https://api.freelancehunt.com/projects'
+
 
 def __sign(api_secret, url, method, post_params=''):
     msg = url + method + post_params
@@ -94,3 +96,31 @@ def get_prj_detail(prj_id):
     return prj
 
 
+def get_prj_list(skill_list=MY_SKILLS):
+    my_skills = ','.join(str(x) for x in skill_list)
+
+    url = '{}?skills={}'.format(URL_PROJECT_LIST, my_skills)
+    my_sign = __sign(API_KEY, url, METHOD, )
+    x = requests.get(url, auth=(ID, my_sign))
+    answ = json.loads(x.content.decode('utf-8'))
+    arr = []
+    for line in answ:
+        prj = FhProject()
+        prj.project_id = line['project_id']
+        prj.avatar = line['from']['avatar']
+        prj.login = line['from']['login']
+        prj.fname = line['from']['fname']
+        prj.sname = line['from']['sname']
+        prj.author_url = line['from']['url']
+        prj.status_name = line['status_name']
+        prj.description = line['description']
+        prj.description_html = line['description_html']
+        try:
+            skills = line['skills']
+        except:
+            skills = []
+        prj.skills = skills
+        prj.tags = line.get('tags', [])
+        prj.title = line['name']
+        arr.append(prj)
+    return arr

@@ -20,5 +20,13 @@
         </tr>
     {% endfor %}
     </table>
+        <div>
+        <button class="listbtn" ><strong>Pyhon task >></strong></button>
+        </div>
+<script>
+    document.getElementsByClassName("listbtn")[0].onclick = function() {
+        window.location.href = "/prjlist";
+    }
+</script>
     </div>
 {% endblock %}
